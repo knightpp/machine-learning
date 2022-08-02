@@ -9,8 +9,8 @@ def draw_line(slope: float, y_intercept: float, color='grey', linewidth=0.7, sta
 
 
 def plot_points(features, labels):
-    X = np.array(features)
+    x = np.array(features)
     y = np.array(labels)
-    pyplot.scatter(X, y)
+    pyplot.scatter(x, y)
     pyplot.xlabel('number of rooms')
     pyplot.ylabel('prices')
