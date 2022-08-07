@@ -1,7 +1,7 @@
+import random as rnd
 from typing_extensions import Self
 import numpy as np
 from matplotlib import pyplot as plt
-import random as rnd
 
 
 class Perceptron:
@@ -31,7 +31,7 @@ class Perceptron:
 
     def mean_error(self, features: np.ndarray, labels: np.ndarray) -> float:
         total_error = 0.0
-        for i in range(len(features)):
+        for (i, _) in enumerate(features):
             total_error += self.error(features[i], labels[i])
         return total_error / len(features)
 
@@ -85,10 +85,10 @@ def step(x: float) -> float:
 
 
 def plot_points(features, labels):
-    X = np.array(features)
+    x = np.array(features)
     y = np.array(labels)
-    spam = X[np.argwhere(y == 1)]
-    ham = X[np.argwhere(y == 0)]
+    spam = x[np.argwhere(y == 1)]
+    ham = x[np.argwhere(y == 0)]
     plt.scatter([s[0][0] for s in spam],
                 [s[0][1] for s in spam],
                 s=100,

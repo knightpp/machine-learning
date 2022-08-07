@@ -1,3 +1,9 @@
 {
-    "python.linting.enabled": false
+    "python.linting.enabled": true,
+    "git.postCommitCommand": "push",
+    "python.linting.pylintArgs": [
+        "--disable=missing-class-docstring",
+        "--disable=missing-function-docstring",
+        "--disable=invalid-name",
+    ]
 }
