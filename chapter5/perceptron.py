@@ -13,27 +13,27 @@ class Perceptron:
     def score(self, xs: np.ndarray) -> float:
         return np.dot(self.weights, xs) + self.bias
 
-    def predict(self, features: np.ndarray) -> float:
-        return step(self.score(features))
+    def predict(self, xs: np.ndarray) -> float:
+        return step(self.score(xs))
 
     def perceptron_trick(self, xs: np.ndarray, y: float, learning_rate: float) -> None:
         y_predicted = self.predict(xs)
 
-        self.weights += learning_rate * (y - y_predicted) * xs
+        self.weights += xs * learning_rate * (y - y_predicted)
         self.bias += learning_rate * (y - y_predicted)
 
-    def error(self, features: np.ndarray, label: float) -> float:
-        pred = self.predict(features)
-        if pred == label:
+    def error(self, xs: np.ndarray, y: float) -> float:
+        pred = self.predict(xs)
+        if pred == y:
             return 0
         else:
-            return np.abs(self.score(features))
+            return np.abs(self.score(xs))
 
-    def mean_error(self, features: np.ndarray, labels: np.ndarray) -> float:
+    def mean_error(self, xs: np.ndarray, y: np.ndarray) -> float:
         total_error = 0.0
-        for (i, _) in enumerate(features):
-            total_error += self.error(features[i], labels[i])
-        return total_error / len(features)
+        for (i, _) in enumerate(xs):
+            total_error += self.error(xs[i], y[i])
+        return total_error / len(xs)
 
     def plot(self, start=0, stop=3, **kwargs) -> None:
         if len(self.weights) != 2:
@@ -50,22 +50,24 @@ class Perceptron:
 
         plt.plot(x_axis, (-a*x_axis - c)/b, **kwargs)
 
-    def train(self, features: np.ndarray, labels: np.ndarray, epochs=200, learning_rate=0.01):
+    def train(self, features: np.ndarray, labels: np.ndarray, epochs=200, learning_rate=0.01, draw=True):
         if len(features) != len(labels):
             raise Exception("len(features) != len(labels)")
 
         errors = []
         for _ in range(epochs):
-            draw_line(self.weights[0], self.weights[1], self.bias,
-                      color='grey', linewidth=1.0, linestyle='dotted')
+            if draw:
+                draw_line(self.weights[0], self.weights[1], self.bias,
+                          color='grey', linewidth=1.0, linestyle='dotted')
 
             errors.append(self.mean_error(features, labels))
             idx = rnd.randrange(0, len(features))
             self.perceptron_trick(features[idx], labels[idx], learning_rate)
 
-        draw_line(self.weights[0], self.weights[1], self.bias)
-        plot_points(features, labels)
-        plt.show()
+        if draw:
+            draw_line(self.weights[0], self.weights[1], self.bias)
+            plot_points(features, labels)
+            plt.show()
         plt.scatter(range(epochs), errors)
         plt.xlabel('epoch')
         plt.ylabel('error')
