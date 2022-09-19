@@ -1,0 +1,8 @@
+name: grokking-ml
+channels:
+  - defaults
+dependencies:
+  - python=3.10
+  - tensorflow
+  - matplotlib
+prefix: /opt/conda/envs/grokking-ml
